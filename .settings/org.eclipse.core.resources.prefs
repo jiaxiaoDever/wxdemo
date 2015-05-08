@@ -1,0 +1,18 @@
+#Fri Apr 17 16:50:15 CST 2015
+eclipse.preferences.version=1
+encoding//WebContent/META-INF=UTF-8
+encoding//WebContent/WEB-INF=UTF-8
+encoding//WebContent/login/login.jsp=UTF-8
+encoding//src/org/stan/yxgz/main=UTF-8
+encoding//src/org/stan/yxgz/msgreq=UTF-8
+encoding//src/org/stan/yxgz/msgresp=UTF-8
+encoding//src/org/stan/yxgz/pojo=UTF-8
+encoding//src/org/stan/yxgz/service=UTF-8
+encoding//src/org/stan/yxgz/servlet=UTF-8
+encoding//src/org/stan/yxgz/str=UTF-8
+encoding//src/org/stan/yxgz/util=UTF-8
+encoding//src/org/stan/yxgz/util/MessageUtil.java=UTF-8
+encoding//src/org/stan/yxgz/util/MyTrustManager.java=UTF-8
+encoding/<project>=UTF-8
+encoding/WebContent=UTF-8
+encoding/build=UTF-8

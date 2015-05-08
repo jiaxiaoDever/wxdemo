@@ -1,0 +1,6 @@
+[INFO ] 2015-04-24 17:22:45,191        org.stan.yxgz.main.MenuManager     - 删除菜单成功！
+  [ERROR] 2015-04-24 17:22:45,590          org.stan.yxgz.util.YiXinUtil     - 创建菜单失败
+  [INFO ] 2015-04-24 17:22:45,590        org.stan.yxgz.main.MenuManager     - 菜单创建失败，错误码：40024
+  [INFO ] 2015-04-24 17:25:40,231        org.stan.yxgz.main.MenuManager     - 删除菜单成功！
+  [INFO ] 2015-04-24 17:25:40,711        org.stan.yxgz.main.MenuManager     - 创建菜单成功！
+  

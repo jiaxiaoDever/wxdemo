@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<articlelList>
+	<Article>
+		<Title>最新报表</Title>
+		<Description>显示访问量最多的公共报表，方便用户直接操作.</Description>
+		<PicUrl>http://wxreports.bringbi.com/image/menu/banner_big.jpg</PicUrl>
+		<Url></Url>
+	</Article>
+	<Article>
+		<Title>报表1</Title>
+		<Description>报表1</Description>
+		<PicUrl>http://wxreports.bringbi.com/image/menu/banner_s1.jpg</PicUrl>
+		<Url></Url>
+	</Article>
+	<Article>
+		<Title>报表1</Title>
+		<Description>报表1</Description>
+		<PicUrl>http://wxreports.bringbi.com/image/menu/banner_s1.jpg</PicUrl>
+		<Url></Url>
+	</Article>
+	<Article>
+		<Title>报表2</Title>
+		<Description>报表2</Description>
+		<PicUrl>http://wxreports.bringbi.com/image/menu/banner_s1.jpg</PicUrl>
+		<Url></Url>
+	</Article>
+	<Article>
+		<Title>报表3</Title>
+		<Description>报表3</Description>
+		<PicUrl>http://wxreports.bringbi.com/image/menu/banner_s2.jpg</PicUrl>
+		<Url></Url>
+	</Article>
+</articlelList>
