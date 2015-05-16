@@ -69,6 +69,14 @@
     <servlet-name>Main</servlet-name>
     <servlet-class>org.stan.yxgz.servlet.MainServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>MainCoach</servlet-name>
+    <servlet-class>org.stan.yxgz.servlet.MainCoachServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MainCoach</servlet-name>
+    <url-pattern>/mainCoach</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Main</servlet-name>
     <url-pattern>/main</url-pattern>
