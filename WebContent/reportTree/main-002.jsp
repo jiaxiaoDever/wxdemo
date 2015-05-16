@@ -52,8 +52,10 @@ a{color:black}
 .panel{}
 .panel div{}
 .panel div ul{ overflow:hidden;height:auto;}
-.panel span{ display:block;height:auto; margin:1px 0; cursor:pointer; border-bottom:1px solid #CCC;}
-.panel span:hover{ background-color:#e6e6e6; color:#cf0404;}
+/* .panel span{ display:block;height:auto; margin:1px 0; cursor:pointer; border-bottom:1px solid #CCC;} */
+.panSpan{ display:block;height:auto; margin:1px 0; cursor:pointer; border-bottom:1px solid #CCC;}
+/* .panel span:hover{ background-color:#e6e6e6; color:#cf0404;} */
+.panSpan:hover{ background-color:#e6e6e6; color:#cf0404;}
 .panel a{ color:#333; text-decoration:none;}
 .panel a:hover{ color:#06F;} 
 
@@ -97,6 +99,13 @@ moz-border-radius: 15px;-webkit-border-radius: 15px;border-radius:15px; backgrou
 .welcome{float:left;color:#fff;font-size:42px;font-family:"微软雅黑";letter-spacing:4px;margin:50px 0px 0px 140px;}
 .selected{border-bottom: 5px solid #3016F3;}
 /* #LoginForm{margin:0 auto;width:950px;text-align:left;}.redzi{color:#f00;} */
+.caItemDiff{  
+    width: 20px;  
+    height: 20px;  
+    background-image:url(/image/diff.png);
+    background-position: 0px -575px;  
+    float: left;  
+} 
 </style>
 <script type="text/javascript">
 
@@ -397,6 +406,24 @@ function back(){
 	$("#confirmForm").css("display","none");
 	$("#container").css("display","block");
 }
+
+function scoreHtmls(score){
+	if(score>=5)
+		score=5;
+	var htmls="<table style=\"padding-left: 20px;color:black\"><tr><td>评价:</td><td>";
+	for(var i=1;i<=5;i++){
+		if(score<=5 && i<=score){
+			htmls+="<span id=\"score"+i+"\" class=\"caItemDiff pItemDiffFirst\" style=\"background-position: 0px -555px;\"></span>";
+		}else{
+			
+			htmls+="<span id=\"score"+i+"\" class=\"caItemDiff pItemDiffFirst\" style=\"background-position: 0px -575px;\"></span>";
+			
+			
+		}
+	}
+	htmls+="</td></tr></table>";
+	return htmls;
+}
 function init(subjectId,json,text,state){
 var texts=text;	
 var varCoachId="";
@@ -406,12 +433,13 @@ var forTree = function(o){
 			var urlstr = "";
 			try{
 				if(typeof o[i]["coach"] != "undefined"){
-					varCoachId=o[i]["coach"]["id"];
-					urlstr="<div><div style=\"margin-bottom:5px;padding-top:5px\"><img style=\"float:left\" width=\"80px\" height=\"80px\" src=\""+o[i]["coach"]["picUrl"]+"\"/><div class=\"continer\"> <b>姓名："+o[i]["coach"]["name"]+"</b><br/><p style=\"white-space:normal;word-break:break-all;overflow:hidden\">简介：</p></div></br></br></div><ul lang=\""+o[i]["coach"]["id"]+"\">";
+					var scoreHtml=scoreHtmls(o[i]["coach"]["score"]);
+					varCoachId=o[i]["coach"]["id"];//浏览次数【"+o[i]["coach"]["checkNum"]+"】
+					urlstr="<div><div style=\"margin-bottom:5px;padding-top:5px\"><img style=\"float:left\" width=\"80px\" height=\"80px\" src=\""+o[i]["coach"]["picUrl"]+"\"/><div class=\"continer\"> <b>姓名："+o[i]["coach"]["name"]+"&nbsp;&nbsp;</b><br/>"+scoreHtml+"<p style=\"white-space:normal;word-break:break-all;overflow:hidden\">简介：</p></div></br></br></div><ul lang=\""+o[i]["coach"]["id"]+"\">";
 				}else{
 					var day=o[i]["day"];
 					//urlstr="<div><span><img src=\"22\" width=\"40px\" height=\"40px\"/><a href=\"javascript:openConfirm('"+day+"',"+this+")\">"+o[i]["day"]+"总共【"+o[i]["totalNum"]+"】还剩【"+o[i]["canBookNum"]+"】</a></span><ul>";
-					urlstr="<div><span><img src=\"22\" width=\"40px\" height=\"40px\"/><a href=\"javascript:openConfirm('"+day+"','"+varCoachId+"','"+subjectId+"')\">"+o[i]["day"]+"总共【"+o[i]["totalNum"]+"】还剩【"+o[i]["canBookNum"]+"】</a></span><ul>";
+					urlstr="<div><span class=\"panSpan\"><img src=\"22\" width=\"40px\" height=\"40px\"/><a href=\"javascript:openConfirm('"+day+"','"+varCoachId+"','"+subjectId+"')\">"+o[i]["day"]+"总共【"+o[i]["totalNum"]+"】还剩【"+o[i]["canBookNum"]+"】</a></span><ul>";
 				}
 				texts+=urlstr;
 				if(o[i]["courseDays"] != null){
@@ -612,12 +640,13 @@ var forTableEvemt=function(o){
 		for(var i=0;i<o.length;i++){
 			var free=o[i]["canSingNum"];
 			var courseId=o[i]["courseId"];
+			days=o[i]["startTime"]+"-"+o[i]["endTime"];
 			if(am=='am'){
 				if(free==0){
 					$("#am"+(i+1)).attr("disabled",true);
 					$("#am"+(i+1)).parent("dd").css("background-color","#AAA2A0");
 				}else{
-					$("#am"+(i+1)).attr("href","javascript:conformOrder('"+courseId+"','"+(i+1)+"','"+day+"','"+am+"')");
+					$("#am"+(i+1)).attr("href","javascript:conformOrder('"+courseId+"','"+(i+1)+"','"+days+"','"+am+"')");
 				} 
 				$("#am"+(i+1)).attr("lang",o[i]["courseId"]);
 			}else{
@@ -625,7 +654,7 @@ var forTableEvemt=function(o){
 					$("#pm"+(i+1)).parent("dd").css("background-color","#AAA2A0");
 					$("#pm"+(i+1)).attr("disabled",true);
 				}else{  
-					$("#pm"+(i+1)).attr("href","javascript:conformOrder('"+courseId+"','"+(i+1)+"','"+day+"','"+am+"')");
+					$("#pm"+(i+1)).attr("href","javascript:conformOrder('"+courseId+"','"+(i+1)+"','"+days+"','"+am+"')");
 				}
 				$("#pm"+(i+1)).attr("lang",o[i]["courseId"]);
 				//$("#pm"+(i+1)).attr("href","javascript:confrim('"+o[i]["courseId"]+"')");
@@ -761,12 +790,10 @@ function validateAndSubmitForm(){
 			  		
 			  		}
 			  	}else{
-			  		var fromlineError = $("#msg");
-			  		
 		  			fromlineError.css("display","block");
 		  			var fromlineError =$("#msg");
 		  			fromlineError.css("color","red");
-		  			fromlineError.html('${reason}');
+		  			fromlineError.html(data.reason);
 				 
 			   }
 		},'json');
