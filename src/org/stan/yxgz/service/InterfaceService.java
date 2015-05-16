@@ -8,12 +8,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.stan.yxgz.pojo.Coach;
@@ -232,8 +239,295 @@ public  class InterfaceService  {
 		
 		return result;
 	}
+	/**
+	 * 我是教练是否已注册
+	 * @param openId  根据用户openId来判断
+	 * 返回数据result属性说明：
+     *teacherId:如果绑定了，有教师编号值，否则为null;
+     *isbanded:如果绑定了为true,否则为false;
+     *checkstat:如果未绑定为null，否则为注册审核状态值(待审核、审核通过、审核未通过)
+	 * @return
+	 */
+	public static Map<String,Object> isRegister(String openId,HttpServletRequest request){
+		Map<String,Object> result=new HashMap<String, Object>();
+		//我是教练是否已经注册
+		String url= PropertyUtils.getWebServiceProperty("coach.mine");
+		url=url.replace("openId", openId);
+		HttpRequestData httpData = UrlUtil.sendGet(url);
+		String json=httpData.getResult();
+		Map<String,String> stateMap=new HashMap<String, String>();
+		stateMap.put("DSH", "待审核");
+		stateMap.put("SHTG", "审核通过");
+		stateMap.put("SHWTG", "审核未通过");
+		
+		JSONObject obj = JSONObject.fromObject(json);  
+	    boolean state=Boolean.valueOf(obj.getString("success"));
+	    String title=obj.getString("title").toString();
+	    String reason=obj.getString("reason");
+		//{"success":true,"title":"","reason":"","result":"{teacherId:null,isbanded:false,checkstat:null}"}
+		result.put("state", state);
+		result.put("reason", reason);
+		request.setAttribute("state", state);
+		request.setAttribute("reason", reason);
+		if(state){
+			json = obj.get("result").toString();
+			JSONObject obj2 = JSONObject.fromObject(json); 
+			String teacherId=obj2.getString("teacherId");
+			boolean isbanded=obj2.getBoolean("isbanded");
+			String checkstat=obj2.getString("checkstat");
+			//teacherId="sssssdddd";
+			//isbanded=true;
+			//checkstat="SHTG";
+			result.put("isbanded", isbanded);
+			result.put("teacherId", teacherId);
+			request.setAttribute("isbanded", isbanded);
+			request.setAttribute("teacherId", teacherId);
+			if(StringUtils.isNotBlank(teacherId) || isbanded){  //已经绑定
+				if(checkstat.equals("DSH") || checkstat.equals("SHWTG")){  //这两种状态不能看到学员信息，待审核，审核未通过
+					String msg=stateMap.get(checkstat);
+					result.put("checkstat", checkstat);
+					result.put("msg", msg);
+					request.setAttribute("checkstat", checkstat);
+					request.setAttribute("msg", msg);
+				}else{//查看学员上课信息
+					//{"branchId":"网点编号","branchName":"网点名称","checkNum":"教练被浏览数","count":"","des":"","duteAge":"教龄N月","id":"教练编号","isHost":"false","jxId":"驾校编号","jxName":"驾校名称","likeNum":"","name":"cd名称","picUrl":"教练头像地址","score":"评分","scoreNum":"点评数","sex":"性别"},
+					//"courseDays":[{"canBookNum":
+					String afterUrl= PropertyUtils.getWebServiceProperty("coach.after");
+					afterUrl=afterUrl.replace("teacherId", teacherId);
+					List<Map<String,Object>> data=new ArrayList<Map<String,Object>>();
+					List<Map<String,Object>> datas=new ArrayList<Map<String,Object>>();
+					List<String> text=new ArrayList<String>();
+					data=InterfaceService.getCoachStudent(afterUrl,teacherId,text);
+					String beforUrl= PropertyUtils.getWebServiceProperty("coach.before");
+					List<String> texts=new ArrayList<String>();
+					beforUrl=beforUrl.replace("teacherId", teacherId);
+					datas=InterfaceService.getCoachStudent(beforUrl,teacherId,texts);
+					
+					/*request.setAttribute("data", "[{\"dataLine\":\"2015-05-14\",\"areaCode\":\"上午\",\"dataList\":[{\"dataTime\":\"8:00-9:00\",\"students\":\"张一,张二，张三，张思\"},{\"dataTime\":\"9:00-10:00\",\"students\":\"张一,张二，张三，张思\"},{\"dataTime\":\"10:00-11:00\",\"students\":\"张一,张二，张三，张思\"},{\"dataTime\":\"11:00-12:00\",\"students\":\"张一,张二，张三，张思\"}]},{\"dataLine\":\"2015-05-14\",\"areaCode\":\"下午\",\"dataList\":[{\"dataTime\":\"13:00-14:00\",\"students\":\"张一,张二，张三，张思\"},{\"dataTime\":\"14:00-15:00\",\"students\":\"张一,张二，张三，张思\"},{\"dataTime\":\"15:00-16:00\",\"students\":\"张一,张二，张三，张思\"},{\"dataTime\":\"16:00-17:00\",\"students\":\"张一,张二，张三，张思\"}]}]");
+					request.setAttribute("datas","[{\"dataLine\":\"2015-05-14测试\",\"areaCode\":\"上午\",\"dataList\":[{\"dataTime\":\"8:00-9:00\",\"students\":\"张一,张二，张三，张思\"},{\"dataTime\":\"9:00-10:00\",\"students\":\"张一,张二，张三，张思\"},{\"dataTime\":\"10:00-11:00\",\"students\":\"张一,张二，张三，张思\"},{\"dataTime\":\"11:00-12:00\",\"students\":\"张一,张二，张三，张思\"}]},{\"dataLine\":\"2015-05-14测试\",\"areaCode\":\"下午\",\"dataList\":[{\"dataTime\":\"13:00-14:00\",\"students\":\"张一,张二，张三，张思\"},{\"dataTime\":\"14:00-15:00\",\"students\":\"张一,张二，张三，张思\"},{\"dataTime\":\"15:00-16:00\",\"students\":\"张一,张二，张三，张思\"},{\"dataTime\":\"16:00-17:00\",\"students\":\"张一,张二，张三，张思\"}]}]");
+					request.setAttribute("text", "陈教练:2015-05-14至2015-05-25一共15个课时，工休息5个");
+					request.setAttribute("texts", "陈教练:2015-01-14至2015-05-13一共150个课时，工休息50个");*/
+					
+					request.setAttribute("data", data.size()<1?"[{}]":JSONArray.fromObject(data));
+					request.setAttribute("datas",datas.size()<1?"[{}]":JSONArray.fromObject(datas));
+					request.setAttribute("text", text.get(0));
+					request.setAttribute("texts", texts.get(0));
+				}
+			}else{  //未绑定
+				request.setAttribute("data", "[{}]");
+				request.setAttribute("datas","[{}]");
+				request.setAttribute("text", "");
+				request.setAttribute("texts", "");
+			}
+		}
+		return result;
+	}
 	
+	public static Map<String,Object> getCommon(){
+		Map<String,Object> result=new HashMap<String, Object>();
+		String jxId=PropertyUtils.getWebServiceProperty("school.id");
+		String url= PropertyUtils.getWebServiceProperty("coach.common");
+		url=url.replace("jxId", jxId);
+		HttpRequestData httpData = UrlUtil.sendGet(url);
+		String json=httpData.getResult();
+		JSONObject obj = JSONObject.fromObject(json);  
+	    boolean state=Boolean.valueOf(obj.getString("success"));
+	    String title=obj.getString("title").toString();
+	    String reason=obj.getString("reason");
+	    result.put("state", state);
+	    result.put("reason",reason);
+		if(state){
+			json = obj.get("result").toString();
+			JSONObject obj2 = JSONObject.fromObject(json); 
+			String jxName=obj2.getString("jxName");
+			JSONArray arryBranches=JSONArray.fromObject(obj2.get("branches"));
+			List<Map<String,String>> listBranches=new ArrayList<Map<String,String>>();
+			List<Map<String,String>> listTeaCarTypes=new ArrayList<Map<String,String>>();
+			List<Map<String,String>> listCarTypes=new ArrayList<Map<String,String>>();
+			for(int i=0;i<arryBranches.size();i++){
+				Map<String,String> m=new HashMap<String, String>();
+				JSONObject o = JSONObject.fromObject(arryBranches.get(i));
+				m.put("id", o.getString("branchId"));
+				m.put("name", o.getString("branchName"));
+				m.put("branchAddress", o.getString("branchAddress"));
+				listBranches.add(m);
+			}
+			JSONArray arryTeaCarTypes=obj2.getJSONArray("teaCarTypes");
+			for(int i=0;i<arryTeaCarTypes.size();i++){
+				Map<String,String> m=new HashMap<String, String>();
+				JSONObject o = JSONObject.fromObject(arryTeaCarTypes.get(i));
+				m.put("id", o.getString("dataId"));
+				m.put("name", o.getString("dataName"));
+				listTeaCarTypes.add(m);
+			}
+			
+			JSONArray arryCarTypes=obj2.getJSONArray("carTypes");
+			for(int i=0;i<arryCarTypes.size();i++){
+				Map<String,String> m=new HashMap<String, String>();
+				JSONObject o = JSONObject.fromObject(arryCarTypes.get(i));
+				m.put("id", o.getString("dataId"));
+				m.put("name", o.getString("dataName"));
+				listCarTypes.add(m);
+			}
+			String [] sub=new String[]{subjectSecond,subjectThird};
+			List<Map<String,String>> listSubs=new ArrayList<Map<String,String>>();
+			for(int i=0;i<sub.length;i++){
+				Map<String,String> subMap=new HashMap<String, String>();
+				subMap.put("id", sub[i]);
+				String name=i==0?"科目二":"科目三";
+				subMap.put("name", name);
+				listSubs.add(subMap);
+			}
+			
+			result.put("jxName", jxName);
+			result.put("jxId", jxId);
+			result.put("subject", listSubs.toArray());
+			result.put("carType", listCarTypes.toArray());
+			result.put("branch", listBranches.toArray());
+			result.put("coachCarType", listTeaCarTypes.toArray());
+		}
+		return result;
+	}
 
+	public static Map<String,Object> getCoachBeforStudent(String teacherId){
+		Map<String,Object> map=new HashMap<String, Object>();
+		String url= PropertyUtils.getWebServiceProperty("coach.before");
+		url=url.replace("teacherId", teacherId);
+		HttpRequestData httpData = UrlUtil.sendGet(url);
+		String json=httpData.getResult();
+		//{"success":true,"title":null,"reason":null,"result":{"teacherId":null,"teacherName":null,
+		//"jxId":null,"jxName":null,"branchId":null,"branchName":null,"startDay":"2015-05-12 00:00:00","endDay":"2015-05-15 00:00:00","totolCoures":0,"noCoures":0,"duteCoures":0,"roasterDays":[]}}
+		System.out.println(json);
+		JSONObject obj = JSONObject.fromObject(json);  
+		boolean state=obj.getBoolean("success");
+		String reason=obj.getString("reason");
+		if(state){
+			JSONObject o=JSONObject.fromObject(obj.get("result"));
+			String Id=o.getString("teacherId");
+			String name=o.getString("teacherName");
+			String jxId=o.getString("jxId");
+			String jxName=o.getString("jxName");
+			String branchId=o.getString("branchId");
+			String branchName=o.getString("branchName");
+			String startDay=o.getString("startDay");
+			String endDay=o.getString("endDay");
+			String totolCoures=o.getString("totolCoures");
+			String duteCoures=o.getString("duteCoures");
+			String noCoures=o.getString("noCoures");
+			JSONArray arry=JSONArray.fromObject(o.get("roasterDays"));
+			for(int a=0;a<arry.size();a++){
+				
+			}
+		}
+		return map;
+	}
+	
+	public static List<Map<String,Object>> getCoachStudent(String url,String teacherId,List<String> message){
+		List<Map<String,Object>> result=new ArrayList<Map<String,Object>>();
+		HttpRequestData httpData = UrlUtil.sendGet(url);
+		String json=httpData.getResult();
+		//{"success":true,"title":null,"reason":null,"result":{"teacherId":null,"teacherName":null,
+		//"jxId":null,"jxName":null,"branchId":null,"branchName":null,"startDay":"2015-05-12 00:00:00","endDay":"2015-05-15 00:00:00","totolCoures":0,"noCoures":0,"duteCoures":0,"roasterDays":[]}}
+		System.out.println(json);
+		JSONObject obj = JSONObject.fromObject(json);  
+		boolean state=obj.getBoolean("success");
+		String reason=obj.getString("reason");
+		if(state){
+			JSONObject o=JSONObject.fromObject(obj.get("result"));
+			String Id=o.getString("teacherId");
+			String name=o.getString("teacherName");
+			String jxId=o.getString("jxId");
+			String jxName=o.getString("jxName");
+			String branchId=o.getString("branchId");
+			String branchName=o.getString("branchName");
+			String startDay=o.getString("startDay");
+			startDay=startDay.substring(0, 12);
+			String endDay=o.getString("endDay");
+			endDay=endDay.substring(0,12);
+			String totolCoures=o.getString("totolCoures");
+			String duteCoures=o.getString("duteCoures");
+			String noCoures=o.getString("noCoures");
+			String appendHtml="";
+			if(StringUtils.isNotBlank(name) || StringUtils.isNotBlank(Id)){
+				appendHtml=name+"教练:"+startDay+" 至 "+endDay+"(共)"+totolCoures+"课时. 休息"+noCoures+"课时";
+			}else{
+				appendHtml="您暂时没有上课记录!";
+			}
+			message.add(appendHtml);
+			JSONArray arry=JSONArray.fromObject(o.get("roasterDays"));
+			String currentDate=getCurrentData();
+			for(int a=0;a<arry.size();a++){
+				JSONObject o1=JSONObject.fromObject(arry.get(a));
+				
+				Map<String,Object> totalMap=new HashMap<String, Object>();
+				String day=o1.getString("day");
+				//if(currentDate.equals(day)){
+					
+					JSONArray morArry=JSONArray.fromObject(o1.get("coursesOfMorn"));
+					List<Map<String,String>> list=new ArrayList<Map<String,String>>();
+					for(int i=0;i<morArry.size();i++){  //每个课时
+						totalMap.put("dataLine", day);
+						Map<String,String> courseMap=new HashMap<String, String>();
+						JSONObject cO1=JSONObject.fromObject(morArry.get(i));
+						totalMap.put("areaCode", cO1.getString("courseTimearea"));
+						String  startTime=cO1.getString("startTime").split(" ")[1];
+						startTime=startTime.substring(0, 5);
+						String endTime=cO1.getString("endTime").split(" ")[1];
+						endTime=endTime.substring(0, 5);
+						String areaCode=startTime+"-"+endTime;
+						List<String> students=new ArrayList<String>();
+						JSONArray studs=JSONArray.fromObject(cO1.get("courseSts"));
+						String student=new String();
+						for(int j=0;j<studs.size();j++){
+							JSONObject oo=JSONObject.fromObject(studs.get(j));
+							students.add(oo.getString("studentName"));
+							student+=oo.getString("studentName")+",";
+						}
+						courseMap.put("dataTime", areaCode);
+						courseMap.put("students", student.substring(0, student.length()-1));
+						list.add(courseMap);
+					}
+					totalMap.put("dataList", list);
+					result.add(totalMap);  //加载上午的课时
+					JSONArray afterArry=JSONArray.fromObject(o1.get("coursesOfAftern"));
+					totalMap=new HashMap<String, Object>();
+					list=new ArrayList<Map<String,String>>();
+					for(int i=0;i<afterArry.size();i++){
+						totalMap.put("dataLine", day);
+						Map<String,String> courseMap=new HashMap<String, String>();
+						JSONObject cO1=JSONObject.fromObject(afterArry.get(i));
+						totalMap.put("areaCode", cO1.getString("courseTimearea"));
+						String areaCode=cO1.getString("startTime")+"-"+cO1.getString("endTime");
+						List<String> students=new ArrayList<String>();
+						JSONArray studs=JSONArray.fromObject(cO1.get("courseSts"));
+						String student=new String();
+						for(int j=0;j<studs.size();j++){
+							JSONObject oo=JSONObject.fromObject(studs.get(j));
+							students.add(oo.getString("studentName"));
+							student+=oo.getString("studentName")+",";
+						}
+						courseMap.put("dataTime", areaCode);
+						courseMap.put("students", student.substring(0, student.length()-1));
+						list.add(courseMap);
+					}
+					totalMap.put("dataList", list);
+					result.add(totalMap);  //加载下午的课时
+					break;
+				//}else{
+				//	continue;
+				//}
+			}
+		}
+		return result;
+	}
+	
+	public static String getCurrentData(){
+		 Date d = new Date();  
+		 boolean falg=false;
+	     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");  
+	     String currentDate = sdf.format(d);
+	     return currentDate;
+	}
 	/**
 	 * 机器人对话
 	 * @param type  是否是关注,type=attention  关注，其他就是机器人对话

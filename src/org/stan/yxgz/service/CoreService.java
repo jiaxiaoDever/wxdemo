@@ -101,9 +101,16 @@ public class CoreService {
 						newsMsgResp.setArticles(articlelList);
 						respMessage = MessageUtil.newsMessageToXml(newsMsgResp);
 					} else if (eventKey.equals("a4")) {
-						respContent = "呵呵还在开发中";
-						textMsgResp.setContent(respContent);
-						respMessage = MessageUtil.textMessageToXml(textMsgResp);
+						articlelList = MessageUtil.parseFileXml("a4.xml");
+						for(int i=0;i<articlelList.size();i++){
+							String opt="?";
+							if(articlelList.get(i).getUrl().indexOf("?")>=0)
+								opt="&";
+							articlelList.get(i).setUrl(articlelList.get(i).getUrl()+opt+"openId="+fromUserName);
+						}
+						newsMsgResp.setArticleCount(articlelList.size());
+						newsMsgResp.setArticles(articlelList);
+						respMessage = MessageUtil.newsMessageToXml(newsMsgResp);
 					} else if (eventKey.equals("a5")) {
 						articlelList = MessageUtil.parseFileXml("a5.xml");
 						newsMsgResp.setArticleCount(articlelList.size());
