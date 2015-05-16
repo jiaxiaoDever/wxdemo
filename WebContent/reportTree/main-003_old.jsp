@@ -1,4 +1,4 @@
-<%@page import="org.stan.yxgz.service.InterfaceService"%>
+﻿<%@page import="org.stan.yxgz.service.InterfaceService"%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/common/taglibs.jsp" %>
 <%@page import="java.net.URLEncoder"%>
@@ -10,23 +10,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Registered.html</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/skin/default001/css/bootstrap.css">
-    <link rel="stylesheet" href="/skin/default001/css/cover.css">
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-  <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
-  <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
-  <![endif]-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="width=device-width,user-scalable=no;initial-scale=1, minimum-scale=1.0, maximum-scale=1.0" name="viewport">
+<script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
+<title>main-001</title>
+<link href="/css/base.css" rel="stylesheet" type="text/css" />
+<!-- 下拉框 -->
+<link rel="stylesheet" type="text/css" href="/css/style.css" />
 </head>
+<style type="text/css">
+.continer b{padding-left:20px}
+.continer p{padding-left:20px}
+.must{color:red}
+/* a{color:black} */
+#agreeDiv{color:bule;}/* text-align: center; */
+#agreeDiv input{border: 1px solid #0331EB;padding:5px}
+#agreeDiv a{ color:#0331EB; text-decoration:none;}
+ul li{padding-bottom:5px;margin-left:10px}
+.hint a{color:rgb(6, 6, 241)}
+.msg{padding:5px 0 5px 5px;color:red;margin-bottom:10px;}
 
-
-
+.panel{}
+.panel div{}
+.panel div ul{ overflow:hidden;height:auto;}
+/* .panel span{ display:block;height:auto; margin:1px 0; cursor:pointer; border-bottom:1px solid #CCC;} */
+.panSpan{ display:block;height:auto; margin:1px 0; cursor:pointer; border-bottom:1px solid #CCC;}
+/* .panel span:hover{ background-color:#e6e6e6; color:#cf0404;} */
+.panSpan:hover{ background-color:#e6e6e6; color:#cf0404;}
+.panel a{ color:#333; text-decoration:none;}
+.panel a:hover{ color:#06F;} 
+.selected{border-bottom: 5px solid #3016F3;}
+#dataDetail table{width: 80%;padding: 5px;border-collapse: collapse;}
+#dataDetail table td{border: 1px solid gray}
+</style>
 <body>
 <textarea rows="10" cols="10" style="display: none;" id="tempImg"></textarea>  
 <input type="hidden" value="${openId }" id="openId"/>
@@ -42,198 +58,47 @@ if(!isbanded){
 %>
 
 <!-- 登录界面 -->
+<span id="jxDesc" style="font-size: 24px;font:bold;padding-bottom:5px">${jxName }</span>欢迎您!
 <input id="jxId" type="hidden" name="jxId"/>
 <input id="jxName" type="hidden" name="jxName"/>
-    <div class="container col-xs-12">
-	<h4><span id="jxDesc">${jxName }</span>欢迎您!</h4>
 
-
-        <form>
-
-            <h4>如果您已经注册过，请点击<a href="javascript:btnFun('login')">登录</a></h4>
-
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    您的姓名：</label>
-                <input class="form-control" type="text" id="username" name="username" placeholder="">
-            </div>
-
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    身份证号码：</label>
-                <input type="text" class="form-control" id="identityCard" name="identityCard" placeholder="">
-            </div>
-
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    您的性别：</label>
-                <select id="sex" class="form-control">
-                    <option value="1">男</option>
-                    <option value="0">女</option>
-
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="exampleInputFile">
-                    <span class="small_star">*</span>
-                    您的头像：</label>
-				<input type="button" value="test" style="display: none;" value="click me" id="btnUpload" />
-                <input type="file" id="uploadFile" name="uploadFile">
-                <div id="coachImg"><img src="skin/default001/images/02.jpg" /></div>
-                <p class="help-block">图片必须为清晰的正面照，且不能大于5M，背景不限。</p>
-				<div><span id="uploadMsg" class="msg" style="display: none;">正在上传…………</span></div>
-            </div>
-
-
-
-            <h4>合作相关信息</h4>
-
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    所属科目：</label>
-                <select class="form-control" id="subject">
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    所属网点：</label>
-                <select class="form-control" id="branch">
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    准驾车型：</label>
-                <select class="form-control" id="carType">
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    教练车型：</label>
-                <select class="form-control" id="coachCarType">
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    教练证号：</label>
-                <input type="text" class="form-control" id="coachNo" name="coachNo" placeholder="">
-            </div>
-            
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    驾驶证编号：</label>
-                <input type="text" class="form-control" id="carNo" name="carNo" placeholder="">
-            </div>
-
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    车牌号：</label>
-                <input type="text" class="form-control" id="carPno" name="carPno" placeholder="">
-            </div>
-            
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    教练驾龄（月）：</label>
-                <input type="text" class="form-control" id="coachDriverYear" name="coachDriverYear" placeholder="">
-            </div>
-
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    教练年龄（月）：</label>
-                <input type="text" class="form-control" id="coachTeachYear" name="coachTeachYear" placeholder="">
-            </div>
-
-           <!--  <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    训练场地址：</label>
-                <input type="text" class="form-control" id="Email5" placeholder="">
-            </div>
-
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    考场地址：</label>
-                <input type="text" class="form-control" id="Email6" placeholder="">
-            </div>
-
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    来源渠道：</label>
-                <select class="form-control">
-                    <option>客服经理</option>
-                    <option>渠道经理</option>
-                    <option>其他</option>
-                </select>
-            </div>
- 			-->
- 			
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    招生考试指标（人）：</label>
-                <input type="text" class="form-control" id="studentInd" placeholder="">
-            </div>
-
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    住址：</label>
-                <input type="text" class="form-control"  id="address" placeholder="">
-            </div>
-
-            <h4>注册登录信息</h4>
-
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    手机号码：</label>
-                <input type="text" class="form-control" id="telphone" name="telphone" placeholder="">
-            </div>
-
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    密码：</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="">
-            </div>
-
-            <div class="form-group">
-                <label for="exampleInputEmail1">
-                    <span class="small_star">*</span>
-                    确认密码：</label>
-                <input type="password" class="form-control" id="res_password" name="res_password" placeholder="">
-                <span class="msg" style="display: none;" id="msg"></span>
-            </div>
-
-            <div class="checkbox" id="agreeDiv">
-                <label>
-                    <input type="checkbox" id="agree" checked="checked" name="agree" onclick="checkFun()">
-                    点击阅读<a href="#">《37学车教练合约说明》</a>
-                </label>
-            </div>
-
-            <button type="button" class="btn btn-primary btn-group-justified" id="btnOk">同意并注册</button>
-        </form>
-    </div>
-
+<div id="RegisterForm" style="height: 100%">
+<div class="hint">如果您已经注册过，请点击登录<a href="javascript:btnFun('login')">登录</a></div>
+	<ul id="form001">
+	<li><span class="must">*</span>您的姓名:</br><input type="text" id="username" name="username"/></li>
+	<li><span class="must">*</span>身份证号码:</br><input type="text" id="identityCard" name="identityCard"/></li>
+	<li><span class="must">*</span>您的性别:</br><select id="sex"><option value="1">男</option><option value="0">女</option></select></li>
+	<li><span class="must">*</span>您的头像:</br><div style="padding:5px;border: 1px solid #3016F3;"><input type="file"  id="uploadFile" style="width:50xp;height:50px" name="uploadFile"/><input type="button" value="test" style="display: none;" value="click me" id="btnUpload" /><div id="coachImg"><img src="/file/img/IMG20150411225438.jpg" style="width:100px"/></div><span >图片必须为清晰正面免冠照，且不能大于5M，背景颜色不限</span><div><span id="uploadMsg" class="msg" style="display: none;">正在上传…………</span></div></div>
+	
+	</li>
+	<li><div style="padding-bottom:5px;border-bottom: 2px solid #3016F3;"><p style="font: bold;">合作相关信息</p></div></li>
+	<li><span class="must">*</span>所属科目:</br><select id="subject"></select></li>
+	<li><span class="must">*</span>所属网点:</br><select id="branch"></select></li>
+	<li><span class="must">*</span>准驾车型:</br><select id="carType"></select></li>
+	<li><span class="must">*</span>教练车型:</br><select id="coachCarType"></select></li>
+	<li><span class="must">*</span>教练证号:</br><input type="text" id="coachNo" name="coachNo"/></li>
+	<li><span class="must">*</span>驾驶证编号:</br><input type="text" id="carNo" name="carNo"/></li>
+	<li><span class="must">*</span>车牌号:</br><input type="text" id="carPno" name="carPno"/></li>
+	<li><span class="must">*</span>教练驾龄:</br><input type="text" id="coachDriverYear" name="coachDriverYear"/></li>
+	<li><span class="must">*</span>教练教龄:</br><input type="text" id="coachTeachYear" name="coachTeachYear"/></li>
+	<!-- <li><span class="must">*</span>训练场地址:</br><input type="text" id="address" name="address"/></li>
+	<li>考场地址:</br><input type="text" id="examinationRoom" name="examinationRoom"/></li>
+	<li><span class="must">*</span>来源渠道:</br><select id="channel"></select></li> -->
+	<li><span class="must">*</span>招生考试指标:</br><input type="text" id="studentInd"/>(人)</li>
+	<li><span class="must">*</span>住址:</br><input type="text" id="address"/></li>
+	<li><div style="padding-bottom:5px;border-bottom: 2px solid #3016F3;"><p style="font: bold;">注册登录信息</p></div></li>
+	<li><span class="must">*</span>手机号码:</br><input type="text" id="telphone" name="telphone"/></li>
+	<li><span class="must">*</span>密码:</br><input type="text" id="password" name="password"/></li>
+	<li><span class="must">*</span>确认密码:</br><input type="text" id="res_password" name="res_password"/></li>
+	<li><span class="msg" style="display: none;" id="msg"></span></li>
+	<li>&nbsp;</li>
+	<li><div id="agreeDiv"><input type="checkbox" id="agree" checked="checked" name="agree" onclick="checkFun()"/><a href="#">点击阅读《37学车教练合约说明》</a></div></li>
+	<li>&nbsp;</li>
+	<li><div><input type="button" value="同意并注册" id="btnOk"/></div></li>
+	
+	</ul>
+	
+</div>
 <div id="LoginForm" style="display:none;height: 100%">
 <div class="hint">如果您未注册过，请点击注册<a href="javascript:btnFun('register')" >注册</a></div>
 <div class="content">
@@ -256,6 +121,8 @@ if(!isbanded){
 
 
 </div>
+
+
 <%}else{%>
 
 <!--对应学员信息 -->
@@ -295,10 +162,6 @@ ${reason }
 <%} %>
 
 </body>
-
-<script src="/skin/default001/js/jquery.min.js"></script>
-<script src="/skin/default001/js/bootstrap.min.js"></script>
-<script src="/skin/default001/js/holder.js"></script>
 
 <script type="text/javascript">
 var w = document.documentElement.clientWidth;
@@ -703,5 +566,3 @@ window.onload = function(){
 </script>
 
 </html>
-
-
