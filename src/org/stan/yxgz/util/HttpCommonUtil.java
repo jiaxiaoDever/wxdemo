@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,7 +42,21 @@ public class HttpCommonUtil {
 	private static final String COURSE_EVAL="YPJ";
 	private static final String COURSE_CANCEL="YQX";
 	private static  String time="";
-	
+	 public static boolean compare_date(String rowDate, String currentDate) {
+	        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+	        boolean falg=true;
+	        try {
+	            Date dt1 = df.parse(rowDate);
+	            Date dt2 = df.parse(currentDate);
+	           // System.out.println("rowDate:"+dt1.getTime()+"------"+"currentDate:"+dt2.getTime());
+		            if (dt1.getTime() <= dt2.getTime()) {
+		                falg=false;
+		            }
+	           } catch (Exception exception) {
+	            exception.printStackTrace();
+	        }
+	        return falg;
+	    }
 	public static boolean getdate(String current,String areaDate){
 		 Date d = new Date();  
 		 boolean falg=false;
@@ -49,13 +64,18 @@ public class HttpCommonUtil {
 	     String currentDate = sdf.format(d);
 		 Calendar now = Calendar.getInstance();  
 	     int currentArea=now.get(Calendar.HOUR_OF_DAY);
-	     if(currentDate.equals(current)){
-	    	 String [] date = areaDate.split("-");
-	    	 int start=Integer.parseInt(date[0].split(":")[0].replaceAll(" ", ""));
-	    	 int end=Integer.parseInt(date[1].split(":")[0].replaceAll(" ", ""));
-	    	 if(start<=currentArea || currentArea>=end){
-	    		 falg=true;
-	    	 }
+	     boolean result=compare_date(current,currentDate);
+	     if(!result){
+		     if(currentDate.equals(current)){
+		    	 String [] date = areaDate.split("-");
+		    	 int start=Integer.parseInt(date[0].split(":")[0].replaceAll(" ", ""));
+		    	 int end=Integer.parseInt(date[1].split(":")[0].replaceAll(" ", ""));
+		    	 if(start<=currentArea || currentArea>=end){
+		    		 falg=true;
+		    	 }
+		     }else{
+		    	 falg=true;
+		     }
 	     }
 	     return falg;
 	}
