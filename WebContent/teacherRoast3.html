@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>我的排班信息</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="./uikit/css/uikit.css" />
+        <script src="./js/jquery-1.9.1.min.js"></script>
+        <script src="./uikit/js/uikit.min.js"></script>
+        <!-- Autocomplete CSS -->
+        <link rel="stylesheet" href="./uikit/css/components/autocomplete.almost-flat.css">
+        <link rel="stylesheet" href="./uikit/css/components/dotnav.almost-flat.css">
+        <!-- Autocomplete Javascript -->
+        <script src="./uikit/js/components/autocomplete.js"></script>
+    </head>
+    <body>
+    <div class="uk-container-center">
+    	<!-- 过滤器控件 -->
+    	<ul class="uk-tab uk-tab-grid uk-tab-grid" data-uk-tab>
+            <li class="uk-width-1-2 uk-active" data-uk-filter="roast-a"><a href="#">当前排班</a></li>
+            <li class="uk-width-1-2" data-uk-filter="roast-b"><a href="#">历史排班</a></li>
+        </ul>
+		<!-- 动态网格 -->
+		<div data-uk-grid="{controls: '#roast_tab'}">
+		    <div data-uk-filter="roast-a" data-uk-grid class="uk-panel">
+		    	<div data-uk-grid style="padding: 15px;">
+		    	<div class="uk-width-1-10"></div>
+		    	<div class="uk-panel uk-panel-box uk-width-8-10 uk-container-center">
+		    		未来<code> 4 </code>天 共<code> 32 </code>节课<br/>
+		    		已约学员<code> 90 </code>人,还可约<code> 6 </code>人
+		    	</div>
+		    	<div class="uk-width-1-10"></div>
+		    	</div>
+		    	<div class="uk-grid" data-uk-grid>
+		    	<div class="uk-width-1-6 uk-container uk-vertical-align">
+				    <ul class="uk-dotnav uk-flex-column" id="roast-a_tab" data-uk-switcher="{connect:'#roast-a-day'}" data-uk-scrollspy-nav="{closest:'li', smoothscroll:true}">
+					    <li class="uk-active"><a href="#roast-a-5-27"></a></li>
+					    <li><a href="#roast-a-5-28"></a></li>
+					    <li><a href="#roast-a-5-29"></a></li>
+					    <li><a href="#roast-a-5-30"></a></li>
+					</ul>
+		    	</div>
+			    <div class="uk-width-5-6">
+			    	<ul id="roast-a-day" class="uk-switcher">
+			    	<li>
+			    	<div id="roast-a-5-27" >
+                        <table class="uk-panel uk-table">
+                        	<caption>5-27  上午</caption>
+                            <tbody>
+                                <tr><td><em>08:00-09:00</em></td><td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>09:00-10:00</em></td><td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>10:00-11:00</em></td><td><span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>11:00-12:00</em></td> <td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="uk-panel uk-table">
+                        	<caption>5-27  下午</caption>
+                            <tbody>
+                                <tr><td><em>14:00-15:00</em></td><td><span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>15:00-16:00</em></td><td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>16:00-17:00</em></td><td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr> <td><em>17:00-18:00</em></td><td><span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+			    	</li>
+			    	<li>
+			    	<div id="roast-a-5-28">
+                        <table class="uk-panel uk-table">
+                        	<caption>5-28  上午</caption>
+                            <tbody>
+                                <tr><td><em>08:00-09:00</em></td><td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>09:00-10:00</em></td><td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>10:00-11:00</em></td><td><span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>11:00-12:00</em></td> <td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="uk-panel uk-table">
+                        	<caption>5-28  下午</caption>
+                            <tbody>
+                                <tr><td><em>14:00-15:00</em></td><td><span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>15:00-16:00</em></td><td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>16:00-17:00</em></td><td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr> <td><em>17:00-18:00</em></td><td><span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+			    	</li>
+			    	<li>
+			    	<div id="roast-a-5-29">
+                        <table class="uk-panel uk-table">
+                        	<caption>5-29  上午</caption>
+                            <tbody>
+                                <tr><td><em>08:00-09:00</em></td><td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>09:00-10:00</em></td><td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>10:00-11:00</em></td><td><span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>11:00-12:00</em></td> <td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="uk-panel uk-table">
+                        	<caption>5-29  下午</caption>
+                            <tbody>
+                                <tr><td><em>14:00-15:00</em></td><td><span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>15:00-16:00</em></td><td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>16:00-17:00</em></td><td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr> <td><em>17:00-18:00</em></td><td><span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+			    	</li>
+			    	<li>
+			    	<div id="roast-a-5-30">
+                        <table class="uk-panel uk-table">
+                        	<caption>5-30  上午</caption>
+                            <tbody>
+                                <tr><td><em>08:00-09:00</em></td><td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>09:00-10:00</em></td><td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>10:00-11:00</em></td><td><span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>11:00-12:00</em></td> <td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="uk-panel uk-table">
+                        	<caption>5-30  下午</caption>
+                            <tbody>
+                                <tr><td><em>14:00-15:00</em></td><td><span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>15:00-16:00</em></td><td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr><td><em>16:00-17:00</em></td><td><span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                                <tr> <td><em>17:00-18:00</em></td><td><span class="uk-badge uk-badge-success">王五</span>&nbsp;<span class="uk-badge uk-badge-success">张小二</span>&nbsp;<span class="uk-badge">暂无</span>&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+		   			</li>
+		   		</ul>
+			    </div>
+		   		</div>
+		    </div>
+		    <div data-uk-filter="roast-b">
+		    </div>
+		    <hr>
+		</div>
+    </div>
+    </body>
+</html>
